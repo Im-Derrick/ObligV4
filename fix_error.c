@@ -8,25 +8,21 @@ int packet_sizes[5];
 int set_packets = 0;
 int next_slot = 0;
 
-void bubble_sort(){
-    
-}
-
 void fix_error(FILE *input) {
     uint8_t *data = malloc(sizeof(uint8_t) * 100000);
         for(int i = 0; i < 5; i++) {
-        packets[i] = NULL;
+            packets[i] = NULL;
     }
     while(!feof(input)) {
-         int data_read = fread(data, 1, 6, stdin);
+        int data_read = fread(data, 1, 6, stdin);
         int data_length = get_bits(data, 16, 32) + 1;
         data_read += fread(data + 6, 1, data_length, stdin);
 
-    int current_slot = next_slot;
-    next_slot = (next_slot + 1) % 5;
-    packets[current_slot] = malloc(data_read);
-    memcpy(packets[current_slot], data, data_read);
-    packet_sizes[current_slot] = data_read;
+        int current_slot = next_slot;
+        next_slot = (next_slot + 1) % 5;
+        packets[current_slot] = malloc(data_read);
+        memcpy(packets[current_slot], data, data_read);
+        packet_sizes[current_slot] = data_read;
         set_packets += 1;
         if(set_packets == 5) {
             for(int i = 0; i < 5; i++) {
@@ -41,7 +37,6 @@ void fix_error(FILE *input) {
 
 int main() 
 {
-    bubble_sort();
     fix_error(stdin);
 
     return 0;
